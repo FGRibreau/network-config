@@ -2,7 +2,7 @@
 
 Network configuration for NodeJS. **Only tested on Debian**
 
-# npm
+# Setup
 
 ```
 npm install network-config
@@ -12,9 +12,9 @@ npm install network-config
 <a target="_blank" href="https://play.spotify.com/track/4fZJG8y70r2hyw3Kb4sU4N"><img style="width:100%" src="https://cloud.githubusercontent.com/assets/138050/6771675/9996f128-d0e5-11e4-93b1-6fef5c2c499a.gif"></a>
 </p>
 
-# usage
+# Usage
 
-## List active interfaces
+### List active interfaces
 
 ```javascript
 var network = require('network-config');
@@ -35,7 +35,7 @@ network.interfaces(function(err, interfaces){
 });
 ```
 
-## Update interface (static)
+### Update interface (static)
 
 ```
 network.configure('eth0', {
@@ -48,7 +48,7 @@ network.configure('eth0', {
 })
 ```
 
-## Update interface (dhcp) (coming soon)
+### Update interface (dhcp) (coming soon)
     
 ```javascript
 network.configure('eth0', {
