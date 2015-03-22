@@ -1,12 +1,14 @@
 {
-  "name": "node-ifconfig",
+  "name": "network-config",
   "version": "1.0.0",
-  "description": "(debian) ifconfig gateway for nodejs",
+  "description": "debian ip network configuration for NodeJS",
   "main": "src/ifconfig.js",
   "keywords": [
+    "network",
+    "configuration",
+    "ip",
     "debian",
-    "ifconfig",
-    "network"
+    "ifconfig"
   ],
   "scripts": {
     "test": "mocha test/**.test.js"
