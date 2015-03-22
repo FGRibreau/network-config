@@ -1,6 +1,6 @@
 # network-config
 
-Network configuration for NodeJS. **Only tested on Debian**
+Network configuration for NodeJS. **Only used & tested on Debian**
 
 # Setup
 
