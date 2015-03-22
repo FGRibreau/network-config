@@ -32,7 +32,6 @@ module.exports = function (cp) {
   };
 };
 
-
 function parse(ifConfigOut, routeOut) {
   return ifConfigOut.split('\n\n').map(function (inface) {
     var lines = inface.split('\n');
@@ -128,6 +127,7 @@ function getBroadcastAddr(line) {
   }
 
   // inet adr:1.1.1.77  Bcast:1.1.1.255  Masque:1.1.1.0
+  // @todo oh boy. this is ugly.
   return _.chain(line)
     .split(BCAST)
     .slice(1)
@@ -144,7 +144,7 @@ function getBroadcastAddr(line) {
  * @return {string,null} default gateway ip or null
  */
 function getGateway(stdout) {
-  // @todo this is ugly.
+  // @todo yep. this is ugly.
   return _.chain(stdout)
     .split('\n')
     .filter(function (line) {
