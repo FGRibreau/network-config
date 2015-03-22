@@ -1,4 +1,4 @@
-# network-config
+# network-config [![Deps](https://david-dm.org/FGRibreau/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](http://badge.fury.io/js/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](https://travis-ci.org/FGRibreau/network-config.svg)](https://travis-ci.org/FGRibreau/network-config)
 
 Network configuration for NodeJS. **Only used & tested on Debian**
 
