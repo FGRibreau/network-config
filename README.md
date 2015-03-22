@@ -8,6 +8,10 @@ Network configuration for NodeJS. **Only tested on Debian**
 npm install network-config
 ```
 
+<p align="center">
+<a target="_blank" href="https://play.spotify.com/track/4fZJG8y70r2hyw3Kb4sU4N"><img style="width:100%" src="https://cloud.githubusercontent.com/assets/138050/6771675/9996f128-d0e5-11e4-93b1-6fef5c2c499a.gif"></a>
+</p>
+
 # usage
 
 ## List active interfaces
