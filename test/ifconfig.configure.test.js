@@ -62,7 +62,6 @@ describe('ifconfig', function () {
           fs.readFileSync(path.resolve(__dirname, './tmp/interfaces'), 'utf8'),
           fixtures.interfaces_2_out
         );
-        t.deepEqual(os.cmd.shift(), 'service networking reload');
         done();
       });
     });
@@ -81,7 +80,6 @@ describe('ifconfig', function () {
           fs.readFileSync(path.resolve(__dirname, './tmp/interfaces'), 'utf8'),
           fixtures.interfaces_3_out
         );
-        t.deepEqual(os.cmd.shift(), 'service networking reload');
         done();
       });
     });
