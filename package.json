@@ -1,0 +1,32 @@
+{
+  "name": "node-ifconfig",
+  "version": "1.0.0",
+  "description": "(debian) ifconfig gateway for nodejs",
+  "main": "src/ifconfig.js",
+  "keywords": [
+    "debian",
+    "ifconfig",
+    "network"
+  ],
+  "scripts": {
+    "test": "mocha test/**.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Redsmin/node-ifconfig.git"
+  },
+  "author": "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Redsmin/node-ifconfig/issues"
+  },
+  "homepage": "https://github.com/Redsmin/node-ifconfig",
+  "dependencies": {
+    "lodash": "^3.5.0",
+    "when": "^3.7.2"
+  },
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1"
+  }
+}
