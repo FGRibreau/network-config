@@ -2,7 +2,7 @@
   "name": "network-config",
   "version": "0.0.1",
   "description": "debian ip network configuration for NodeJS",
-  "main": "src/ifconfig.js",
+  "main": "index.js",
   "keywords": [
     "network",
     "configuration",
