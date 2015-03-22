@@ -1,8 +1,6 @@
-# node-ifconfig
+# network-config
 
-ifconfig gateway for NodeJS.
-
-**only tested on Debian**
+Network configuration for NodeJS. **Only tested on Debian**
 
 # npm
 
