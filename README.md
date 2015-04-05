@@ -56,3 +56,5 @@ network.configure('eth0', {
 }, function(err){
 });
 ```
+
+# [Changelog](/CHANGELOG.md)
