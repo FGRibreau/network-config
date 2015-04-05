@@ -58,7 +58,7 @@ function excludeInterface(name, content) {
     .join('\n\n').trim();
 }
 
-var formatConfig = _.template((function () {
+var formatConfig = _.template(function () {
   /**
 auto <%= name %>
 iface <%= name %> inet static
@@ -66,4 +66,4 @@ iface <%= name %> inet static
     netmask <%= netmask %>
     gateway <%= gateway %>
   */
-}).toString().split('\n').slice(2, -2).join('\n'));
+}.toString().split('\n').slice(2, -2).join('\n'));
