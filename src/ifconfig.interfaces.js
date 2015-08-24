@@ -4,6 +4,7 @@ var _ = require('lodash');
 var MAC = 'HWaddr';
 var INET = 'inet';
 var BCAST = 'Bcast';
+var DESTINATIONS = ['default', 'link-local'];
 
 module.exports = function (cp) {
   return function (f) {
@@ -145,18 +146,14 @@ function getBroadcastAddr(line) {
  */
 function getGateway(stdout) {
   // @todo yep. this is ugly.
-  return _.chain(stdout)
+  return stdout
     .split('\n')
     .filter(function (line) {
-      return _.include(line, 'default');
-    })
-    .first()
-    .split(' ')
-    .rest() // without "default"
-    .join('')
-    .split('.')
-    .first()
-    .trim()
-    .replace(/-/g, '.')
-    .value();
+      return _.some(DESTINATIONS, function (destination)  {
+        return _.include(line, destination);
+      });
+    })[0]
+    .split(/\s+/)[1]
+    .split('.')[0]
+    .replace(/-/g, '.');
 }
