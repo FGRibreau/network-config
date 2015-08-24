@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Redsmin/node-ifconfig.git"
+    "url": "https://github.com/FGRibreau/network-config.git"
   },
   "author": "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Redsmin/node-ifconfig/issues"
+    "url": "https://github.com/FGRibreau/network-config/issues"
   },
-  "homepage": "https://github.com/Redsmin/node-ifconfig",
+  "homepage": "https://github.com/FGRibreau/network-config",
   "dependencies": {
     "lodash": "^3.5.0",
     "when": "^3.7.2"
