@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.0.3](https://github.com/fgribreau/network-config/tree/v0.0.3) (2015-08-24)
+
+[Full Changelog](https://github.com/fgribreau/network-config/compare/v0.0.2...v0.0.3)
+
+**Merged pull requests:**
+
+- support link-local and prevent crash when recovering gateway [\#2](https://github.com/FGRibreau/network-config/pull/2) ([rbaumier](https://github.com/rbaumier))
+
 ## [v0.0.2](https://github.com/fgribreau/network-config/tree/v0.0.2) (2015-03-22)
 
 [Full Changelog](https://github.com/fgribreau/network-config/compare/v0.0.1...v0.0.2)
