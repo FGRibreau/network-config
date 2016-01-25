@@ -72,7 +72,7 @@ function getInterfaceName(firstLine) {
  * @return {string}           Mac address, format: "xx:xx:xx:xx:xx:xx"
  */
 function getInterfaceMacAddr(firstLine) {
-  if (!_.include(firstLine, MAC)) {
+  if (!_.includes(firstLine, MAC)) {
     return null;
   }
 
@@ -95,7 +95,7 @@ function getInterfaceMacAddr(firstLine) {
  * @return {string,null} xxx.xxx.xxx.xxx
  */
 function getInterfaceIpAddr(line) {
-  if (!_.include(line, INET)) {
+  if (!_.includes(line, INET)) {
     return null;
   }
   return _.first(line.split(':')[1].split(' '));
@@ -111,7 +111,7 @@ function getInterfaceIpAddr(line) {
  * @return {string,null} xxx.xxx.xxx.xxx
  */
 function getInterfaceNetmaskAddr(line) {
-  if (!_.include(line, INET)) {
+  if (!_.includes(line, INET)) {
     return null;
   }
   return _.last(line.split(':'));
@@ -123,7 +123,7 @@ function getInterfaceNetmaskAddr(line) {
  * @return {string,null}      xxx.xxx.xxx.xxx
  */
 function getBroadcastAddr(line) {
-  if (!_.include(line, BCAST)) {
+  if (!_.includes(line, BCAST)) {
     return null;
   }
 
@@ -150,7 +150,7 @@ function getGateway(stdout) {
     .split('\n')
     .filter(function (line) {
       return _.some(DESTINATIONS, function (destination)  {
-        return _.include(line, destination);
+        return _.includes(line, destination);
       });
     })[0]
     .split(/\s+/)[1]

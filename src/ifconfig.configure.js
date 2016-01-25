@@ -49,7 +49,7 @@ function replaceInterface(name, content, interfaceDescription) {
 
 function excludeInterface(name, content) {
   var without = _.curry(function (name, content) {
-    return !_.include(content, name);
+    return !_.includes(content, name);
   });
 
   return _.chain(content)

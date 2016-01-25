@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/FGRibreau/network-config",
   "dependencies": {
-    "lodash": "^3.5.0",
+    "lodash": "^4.0.0",
     "when": "^3.7.2"
   },
   "devDependencies": {
