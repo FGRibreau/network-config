@@ -12,6 +12,6 @@ Destination     Passerelle      Genmask         Indic Metric Ref    Use Iface
 10.21.21.109    *               255.255.255.255 UH    0      0        0 venet0
 10.21.21.110    *               255.255.255.255 UH    0      0        0 venet0
 10.21.21.111    *               255.255.255.255 UH    0      0        0 venet0
-10.10.10.0    *               255.255.255.0   U     0      0        0 vmbr0
+10.10.10.0      *               255.255.255.0   U     0      0        0 vmbr0
 10.21.21.0      *               255.255.255.0   U     0      0        0 vmbr2
-default         10-10-10-1.re 0.0.0.0         UG    0      0        0 vmbr0
+0.0.0.0         10.10.10.1      0.0.0.0         UG    0      0        0 vmbr0
