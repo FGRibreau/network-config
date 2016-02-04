@@ -4,7 +4,7 @@ var _ = require('lodash');
 var MAC = 'HWaddr';
 var INET = 'inet';
 var BCAST = 'Bcast';
-var DESTINATIONS = ['default', 'link-local'];
+var DESTINATIONS = ['0.0.0.0', '169.254.0.0'];
 
 module.exports = function (cp) {
   return function (f) {
@@ -18,7 +18,7 @@ module.exports = function (cp) {
         return f(stderr);
       }
 
-      cp.exec('route', function (err, routeOut, stderr) {
+      cp.exec('route -n', function (err, routeOut, stderr) {
         if (err) {
           return f(err);
         }
@@ -153,7 +153,5 @@ function getGateway(stdout) {
         return _.includes(line, destination);
       });
     })[0]
-    .split(/\s+/)[1]
-    .split('.')[0]
-    .replace(/-/g, '.');
+    .split(/\s+/)[1];
 }
