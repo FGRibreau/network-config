@@ -1,5 +1,6 @@
 'use strict';
 var _ = require('lodash');
+var debug = require('debug')('network-config:interfaces');
 
 var MAC = 'HWaddr';
 var INET = 'inet';
@@ -9,7 +10,7 @@ var DESTINATIONS = ['0.0.0.0', '169.254.0.0'];
 module.exports = function (cp) {
   return function (f) {
     // @todo add command timeout
-    cp.exec('ifconfig', function (err, ifConfigOut, stderr) {
+    cp.exec('ifconfig -a', function (err, ifConfigOut, stderr) {
       if (err) {
         return f(err);
       }
@@ -34,8 +35,8 @@ module.exports = function (cp) {
 };
 
 function parse(ifConfigOut, routeOut) {
-  return ifConfigOut.split('\n\n').map(function (inface) {
-    var lines = inface.split('\n');
+  return _.trim(ifConfigOut).split('\n\n').map(function (inface) {
+    var lines = _.trim(inface).split('\n');
 
     /**
      * Format 1
