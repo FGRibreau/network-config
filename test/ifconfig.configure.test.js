@@ -29,6 +29,23 @@ describe('ifconfig', function () {
       ifconfig.configure.FILE = INTERFACE_FILE;
     });
 
+    it('should not restart service', function (done) {
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp, 'utf8');
+
+      ifconfig.configure('eth1', {
+        restart: false,
+        dhcp: true
+      }, function (err) {
+        t.strictEqual(err, null);
+        t.strictEqual(
+          fs.readFileSync(INTERFACE_FILE, 'utf8'),
+          fixtures.interfaces_dhcp_out
+        );
+        t.equal(os.cmd.length, 0)
+        done();
+      });
+    });
+
     it('should set interface configuration to dhcp', function (done) {
       fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp, 'utf8');
 

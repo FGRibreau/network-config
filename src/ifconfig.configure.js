@@ -26,9 +26,13 @@ module.exports = function (cp) {
           return f(err);
         }
 
-        cp.exec('service networking reload', function (err, __, stderr) {
-          f(err || stderr || null);
-        });
+        if (typeof description.restart == 'boolean'? description.restart : true) {
+          cp.exec('service networking reload', function (err, __, stderr) {
+            f(err || stderr || null);
+          });
+        } else {
+          f(null);
+        }
       });
 
     });
@@ -63,7 +67,7 @@ var formatDhcpConfig = _.template(function () {
   /**
 auto <%= name %>
 iface <%= name %> inet dhcp
-  */
+*/
 }.toString().split('\n').slice(2, -2).join('\n'));
 
 var formatConfig = _.template(function () {
@@ -73,5 +77,5 @@ iface <%= name %> inet static
     address <%= ip %>
     netmask <%= netmask %>
     gateway <%= gateway %>
-  */
+    */
 }.toString().split('\n').slice(2, -2).join('\n'));
