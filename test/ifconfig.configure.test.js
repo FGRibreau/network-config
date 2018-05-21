@@ -29,6 +29,22 @@ describe('ifconfig', function () {
       ifconfig.configure.FILE = INTERFACE_FILE;
     });
 
+    it('should set interface configuration to dhcp', function (done) {
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp, 'utf8');
+
+      ifconfig.configure('eth1', {
+        dhcp: true
+      }, function (err) {
+        t.strictEqual(err, null);
+        t.strictEqual(
+          fs.readFileSync(INTERFACE_FILE, 'utf8'),
+          fixtures.interfaces_dhcp_out
+        );
+        t.deepEqual(os.cmd.shift(), 'service networking reload');
+        done();
+      });
+    });
+
     it('should rewrite the interface configuration', function (done) {
       fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_1, 'utf8');
 
@@ -40,7 +56,7 @@ describe('ifconfig', function () {
       }, function (err) {
         t.strictEqual(err, null);
         t.strictEqual(
-          fs.readFileSync(path.resolve(__dirname, './tmp/interfaces'), 'utf8'),
+          fs.readFileSync(INTERFACE_FILE, 'utf8'),
           fixtures.interfaces_1_out
         );
         t.deepEqual(os.cmd.shift(), 'service networking reload');
@@ -59,7 +75,7 @@ describe('ifconfig', function () {
       }, function (err) {
         t.strictEqual(err, null);
         t.strictEqual(
-          fs.readFileSync(path.resolve(__dirname, './tmp/interfaces'), 'utf8'),
+          fs.readFileSync(INTERFACE_FILE, 'utf8'),
           fixtures.interfaces_2_out
         );
         done();
@@ -77,7 +93,7 @@ describe('ifconfig', function () {
       }, function (err) {
         t.strictEqual(err, null);
         t.strictEqual(
-          fs.readFileSync(path.resolve(__dirname, './tmp/interfaces'), 'utf8'),
+          fs.readFileSync(INTERFACE_FILE, 'utf8'),
           fixtures.interfaces_3_out
         );
         done();

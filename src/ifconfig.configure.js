@@ -41,7 +41,8 @@ module.exports = function (cp) {
 
 
 function replaceInterface(name, content, interfaceDescription) {
-  return excludeInterface(name, content).trim() + '\n\n' + formatConfig(_.extend({
+  var replaceFn = interfaceDescription.dhcp? formatDhcpConfig : formatConfig;
+  return excludeInterface(name, content).trim() + '\n\n' + replaceFn(_.extend({
     name: name
   }, interfaceDescription)) + '\n';
 }
@@ -57,6 +58,13 @@ function excludeInterface(name, content) {
     .filter(without(name))
     .join('\n\n').trim();
 }
+
+var formatDhcpConfig = _.template(function () {
+  /**
+auto <%= name %>
+iface <%= name %> inet dhcp
+  */
+}.toString().split('\n').slice(2, -2).join('\n'));
 
 var formatConfig = _.template(function () {
   /**
