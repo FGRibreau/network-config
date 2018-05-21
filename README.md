@@ -43,7 +43,7 @@ network.configure('eth0', {
     netmask:'x.x.x.x',
     broadcast: 'x.x.x.x',
     gateway: 'x.x.x.x',
-    restart: true // restart networking service right away
+    restart: true // (default) restart networking service right away
 }, function(err){
 
 })
