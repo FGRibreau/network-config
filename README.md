@@ -49,7 +49,7 @@ network.configure('eth0', {
 })
 ```
 
-### Update interface (dhcp) (coming soon)
+### Update interface (dhcp)
     
 ```javascript
 network.configure('eth0', {
