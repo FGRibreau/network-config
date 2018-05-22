@@ -42,7 +42,8 @@ network.configure('eth0', {
     ip: 'x.x.x.x',
     netmask:'x.x.x.x',
     broadcast: 'x.x.x.x',
-    gateway: 'x.x.x.x'    
+    gateway: 'x.x.x.x',
+    restart: true // (default) restart networking service right away
 }, function(err){
 
 })
@@ -52,7 +53,8 @@ network.configure('eth0', {
     
 ```javascript
 network.configure('eth0', {
-    dhcp: true
+    dhcp: true,
+    restart: false // don't restart networking service
 }, function(err){
 });
 ```

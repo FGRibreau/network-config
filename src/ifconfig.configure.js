@@ -26,9 +26,13 @@ module.exports = function (cp) {
           return f(err);
         }
 
-        cp.exec('service networking reload', function (err, __, stderr) {
-          f(err || stderr || null);
-        });
+        if (typeof description.restart == 'boolean'? description.restart : true) {
+          cp.exec('service networking reload', function (err, __, stderr) {
+            f(err || stderr || null);
+          });
+        } else {
+          f(null);
+        }
       });
 
     });
@@ -41,7 +45,8 @@ module.exports = function (cp) {
 
 
 function replaceInterface(name, content, interfaceDescription) {
-  return excludeInterface(name, content).trim() + '\n\n' + formatConfig(_.extend({
+  var replaceFn = interfaceDescription.dhcp? formatDhcpConfig : formatConfig;
+  return excludeInterface(name, content).trim() + '\n\n' + replaceFn(_.extend({
     name: name
   }, interfaceDescription)) + '\n';
 }
@@ -58,6 +63,13 @@ function excludeInterface(name, content) {
     .join('\n\n').trim();
 }
 
+var formatDhcpConfig = _.template(function () {
+  /**
+auto <%= name %>
+iface <%= name %> inet dhcp
+*/
+}.toString().split('\n').slice(2, -2).join('\n'));
+
 var formatConfig = _.template(function () {
   /**
 auto <%= name %>
@@ -65,5 +77,5 @@ iface <%= name %> inet static
     address <%= ip %>
     netmask <%= netmask %>
     gateway <%= gateway %>
-  */
+    */
 }.toString().split('\n').slice(2, -2).join('\n'));
