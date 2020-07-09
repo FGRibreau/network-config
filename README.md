@@ -1,4 +1,4 @@
-# network-config [![Deps](https://david-dm.org/FGRibreau/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](http://badge.fury.io/js/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](https://travis-ci.org/FGRibreau/network-config.svg)](https://travis-ci.org/FGRibreau/network-config) [![Downloads](http://img.shields.io/npm/dm/network-config.svg)](https://www.npmjs.com/package/network-config)
+# network-config [![Deps](https://david-dm.org/FGRibreau/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](http://badge.fury.io/js/network-config.png)](https://david-dm.org/FGRibreau/network-config) [![Version](https://travis-ci.org/FGRibreau/network-config.svg)](https://travis-ci.org/FGRibreau/network-config) [![Downloads](http://img.shields.io/npm/dm/network-config.svg)](https://www.npmjs.com/package/network-config) [![Slack](https://img.shields.io/badge/Slack-Join%20our%20tech%20community-17202A?logo=slack)](https://join.slack.com/t/fgribreau/shared_invite/zt-edpjwt2t-Zh39mDUMNQ0QOr9qOj~jrg)
 
 Network configuration for NodeJS. **Only used & tested on Debian**
 
