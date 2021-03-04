@@ -145,8 +145,8 @@ describe('ifconfig', function () {
     });
 
     it('should list interfaces4', function (done) {
-      execMock.stdout.push(fixtures.ifconfig_get_1);
-      execMock.stdout.push(fixtures.route_get_3);
+      execMock.stdout.push(fixtures.ifconfig_get_4);
+      execMock.stdout.push(fixtures.route_get_4);
 
       ifconfig.interfaces(function (err, interfaces) {
         t.strictEqual(err, null);
@@ -157,21 +157,21 @@ describe('ifconfig', function () {
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
-          gateway: '*'
+          gateway: '192.168.10.1'
         }, {
           name: 'lo',
           ip: '127.0.0.1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
-          gateway: '*'
+          gateway: '192.168.10.1'
         }, {
           name: 'rename3',
           ip: null,
           netmask: null,
           broadcast: null,
           mac: "b8:27:eb:f6:e3:b1",
-          gateway: '*'
+          gateway: '192.168.10.1'
         }]);
         done();
       });

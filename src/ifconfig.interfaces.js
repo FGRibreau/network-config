@@ -1,10 +1,8 @@
 'use strict';
 var _ = require('lodash');
 
-var MAC = 'HWaddr';
 var INET = 'inet';
 var BCAST = 'Bcast';
-var DESTINATIONS = ['default', 'link-local'];
 
 module.exports = function (cp) {
   return function (f) {
@@ -51,14 +49,14 @@ function parse(ifConfigOut, routeOut) {
       ip: getInterfaceIpAddr(lines[1]),
       netmask: getInterfaceNetmaskAddr(lines[1]),
       broadcast: getBroadcastAddr(lines[1]),
-      mac: getInterfaceMacAddr(_.first(lines)),
+      mac: getInterfaceMacAddr(inface),
       gateway: getGateway(routeOut)
     };
   });
 }
 
 function getInterfaceName(firstLine) {
-  return _.first(firstLine.split(' '));
+  return _.first(firstLine.split(/ |(: )/));
 }
 
 /**
@@ -67,22 +65,22 @@ function getInterfaceName(firstLine) {
  * ifconfig output:
  *   - link xx:xx HWaddr xx-xx-xx
  *   - link xx:xx HWaddr xx:xx:xx
+ *    or
+ *   - ether xx:xx:xx:xx:xx:xx  txqueuelen 1000  (Ethernet)
  *
  * @param  {string} firstLine
  * @return {string}           Mac address, format: "xx:xx:xx:xx:xx:xx"
  */
-function getInterfaceMacAddr(firstLine) {
-  if (!_.includes(firstLine, MAC)) {
-    return null;
-  }
+function getInterfaceMacAddr(str) {
 
-  var macAddr = _.last(firstLine.split(MAC)).trim().replace(/-/g, ':');
+  const re = new RegExp(`(?:(?:HWaddr)|(?:ether)) ((?:[0-9a-z]{2}[-:]?){6,})`,"i")
+  const match = str.match(re)
 
-  if (macAddr.split(':').length !== 6) {
-    return null;
-  }
+  if (!match) return null
+  if (match[1].length !== "00:00:00:00:00:00".length) return null
+  const mac = match[1]
+  return mac
 
-  return macAddr;
 }
 
 /**
@@ -98,7 +96,10 @@ function getInterfaceIpAddr(line) {
   if (!_.includes(line, INET)) {
     return null;
   }
-  return _.first(line.split(':')[1].split(' '));
+  const re = new RegExp(`(?:(?:inet adr\:)|(?:inet addr\:)|(?:inet ))((?:[0-9]{1,3}\.?){4})`)
+  const match = line.match(re)
+
+  return match[1].trim()
 }
 
 /**
@@ -106,6 +107,8 @@ function getInterfaceIpAddr(line) {
  *
  * ifconfig output:
  *   - inet xx:xxx.xxx.xxx.xxx mask|masque|...:xxx.xxx.xxx.xxx
+ *    or 
+ *   - inet xxx.xxx.xxx.xxx netmask xxx.xxx.xxx.xxx
  *
  * @param  {string} line
  * @return {string,null} xxx.xxx.xxx.xxx
@@ -114,7 +117,11 @@ function getInterfaceNetmaskAddr(line) {
   if (!_.includes(line, INET)) {
     return null;
   }
-  return _.last(line.split(':'));
+
+  const re = new RegExp(`(?:(?:Masque\:)|(?:Mask\:)|(?:netmask ))((?:[0-9]{1,3}\.?){4})`)
+  const match = line.match(re)
+
+  return match[1].trim()
 }
 
 /**
@@ -123,19 +130,14 @@ function getInterfaceNetmaskAddr(line) {
  * @return {string,null}      xxx.xxx.xxx.xxx
  */
 function getBroadcastAddr(line) {
-  if (!_.includes(line, BCAST)) {
+  if (!line.match( new RegExp(`(${BCAST})|(broadcast)`))) {
     return null;
   }
 
-  // inet adr:1.1.1.77  Bcast:1.1.1.255  Masque:1.1.1.0
-  // @todo oh boy. this is ugly.
-  return _.chain(line)
-    .split(BCAST)
-    .slice(1)
-    .first()
-    .value()
-    .substring(1)
-    .split(' ')[0];
+  const re = new RegExp(`(?:(?:${BCAST}\:)|(?:broadcast ))((?:[0-9]{1,3}\.?){4})`)
+  const match = line.match(re)
+
+  return match[1].trim()
 }
 
 
@@ -145,15 +147,11 @@ function getBroadcastAddr(line) {
  * @return {string,null} default gateway ip or null
  */
 function getGateway(stdout) {
-  // @todo yep. this is ugly.
-  return stdout
-    .split('\n')
-    .filter(function (line) {
-      return _.some(DESTINATIONS, function (destination)  {
-        return _.includes(line, destination);
-      });
-    })[0]
-    .split(/\s+/)[1]
-    .split('.')[0]
-    .replace(/-/g, '.');
+  const re = new RegExp(`(?:(?:default)|(?:link-local)) +([^ ]+)`)
+  const match = stdout.match(re)
+  if (match === null) return null
+
+  const gw = match[1].split(/[-\.]/g).slice(0,4).join(".")
+
+  return gw
 }
