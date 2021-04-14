@@ -57,9 +57,9 @@ function parse(ifConfigOut, routeOut) {
   });
 }
 
-async function isDhcp(interfaceName) {
+function isDhcp(interfaceName) {
   if(interfaceName && interfaceName.length > 0) {
-    const content = await fs.readFileSync('/etc/network/interfaces', {encoding: 'UTF-8'});    
+    const content = fs.readFileSync('/etc/network/interfaces', {encoding: 'UTF-8'});    
     const re = new RegExp(`iface ${interfaceName}[a-zA-Z0-9 ]* dhcp`,"i")
     return re.test(content);
   }
