@@ -1,6 +1,8 @@
 'use strict';
 var fixtures = require('./fixtures');
 var t = require('chai').assert;
+var path = require('path');
+var INTERFACE_FILE = path.resolve(__dirname, './tmp/interfaces');
 
 describe('ifconfig', function () {
   var ifconfigFactory;
@@ -24,6 +26,7 @@ describe('ifconfig', function () {
       };
 
       ifconfig = ifconfigFactory(execMock);
+      ifconfig.interfaces.FILE = INTERFACE_FILE;
     });
 
     it('should list interfaces', function (done) {
@@ -39,14 +42,16 @@ describe('ifconfig', function () {
           netmask: '1.1.1.0',
           broadcast: '1.1.1.255',
           mac: 'aa:aa:aa:aa:aa:aa',
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }, {
           name: 'lo',
           ip: '127.0.0.1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }]);
         done();
       });
@@ -65,21 +70,24 @@ describe('ifconfig', function () {
           netmask: '255.255.255.0',
           mac: 'aa:aa:aa:aa:aa:aa',
           gateway: '10.10.10.1',
-          broadcast: '1.1.1.255'
+          broadcast: '1.1.1.255',
+          dhcp: false
         }, {
           name: 'lo',
           ip: '127.0.0.1',
           netmask: '255.0.0.0',
           mac: null,
           broadcast: null,
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }, {
           name: 'venet0',
           ip: null,
           netmask: null,
           mac: null,
           broadcast: null,
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }]);
         done();
       });
@@ -98,21 +106,24 @@ describe('ifconfig', function () {
           netmask: '1.1.1.0',
           mac: null,
           broadcast: null,
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }, {
           name: 'venet0',
           ip: '1.1.1.2',
           netmask: '1.1.1.255',
           mac: null,
           broadcast: '1.1.1.0',
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }, {
           name: 'venet0:0',
           ip: '1.1.1.102',
           netmask: '1.1.1.255',
           mac: null,
           broadcast: '1.1.1.102',
-          gateway: '10.10.10.1'
+          gateway: '10.10.10.1',
+          dhcp: false
         }]);
         done();
       });
@@ -131,14 +142,16 @@ describe('ifconfig', function () {
           netmask: '1.1.1.0',
           broadcast: '1.1.1.255',
           mac: 'aa:aa:aa:aa:aa:aa',
-          gateway: '*'
+          gateway: '*',
+          dhcp: false
         }, {
           name: 'lo',
           ip: '127.0.0.1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
-          gateway: '*'
+          gateway: '*',
+          dhcp: false
         }]);
         done();
       });
@@ -157,21 +170,24 @@ describe('ifconfig', function () {
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
-          gateway: '192.168.10.1'
+          gateway: '192.168.10.1',
+          dhcp: false
         }, {
           name: 'lo',
           ip: '127.0.0.1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
-          gateway: '192.168.10.1'
+          gateway: '192.168.10.1',
+          dhcp: false
         }, {
           name: 'rename3',
           ip: null,
           netmask: null,
           broadcast: null,
           mac: "b8:27:eb:f6:e3:b1",
-          gateway: '192.168.10.1'
+          gateway: '192.168.10.1',
+          dhcp: false
         }]);
         done();
       });

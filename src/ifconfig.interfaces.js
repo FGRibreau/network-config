@@ -6,7 +6,8 @@ var INET = 'inet';
 var BCAST = 'Bcast';
 
 module.exports = function (cp) {
-  return function (f) {
+  function interfaces (f) {
+    
     // @todo add command timeout
     cp.exec('ifconfig', function (err, ifConfigOut, stderr) {
       if (err) {
@@ -26,13 +27,16 @@ module.exports = function (cp) {
           return f(stderr);
         }
 
-        f(null, parse(ifConfigOut, routeOut));
+        f(null, parse(ifConfigOut, routeOut, fs.readFileSync(interfaces.FILE, {encoding: 'UTF-8'})));
       });
     });
   };
+  
+  interfaces.FILE = '/etc/network/interfaces';
+  return interfaces;
 };
 
-function parse(ifConfigOut, routeOut) {
+function parse(ifConfigOut, routeOut, interfacesContent) {
   return ifConfigOut.split('\n\n').map(function (inface) {
     var lines = inface.split('\n');
 
@@ -52,14 +56,13 @@ function parse(ifConfigOut, routeOut) {
       broadcast: getBroadcastAddr(lines[1]),
       mac: getInterfaceMacAddr(inface),
       gateway: getGateway(routeOut),
-      dhcp: isDhcp(getInterfaceName(_.first(lines)))
+      dhcp: isDhcp(getInterfaceName(_.first(lines)), interfacesContent)
     };
   });
 }
 
-function isDhcp(interfaceName) {
-  if(interfaceName && interfaceName.length > 0) {
-    const content = fs.readFileSync('/etc/network/interfaces', {encoding: 'UTF-8'});    
+function isDhcp(interfaceName, content) {
+  if(interfaceName && interfaceName.length > 0) {        
     const re = new RegExp(`iface ${interfaceName}[a-zA-Z0-9 ]* dhcp`,"i")
     return re.test(content);
   }
