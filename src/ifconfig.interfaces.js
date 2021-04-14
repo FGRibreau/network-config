@@ -1,5 +1,6 @@
 'use strict';
 var _ = require('lodash');
+var fs = require('fs');
 
 var INET = 'inet';
 var BCAST = 'Bcast';
@@ -50,9 +51,19 @@ function parse(ifConfigOut, routeOut) {
       netmask: getInterfaceNetmaskAddr(lines[1]),
       broadcast: getBroadcastAddr(lines[1]),
       mac: getInterfaceMacAddr(inface),
-      gateway: getGateway(routeOut)
+      gateway: getGateway(routeOut),
+      dhcp: isDhcp(getInterfaceName(_.first(lines)))
     };
   });
+}
+
+async function isDhcp(interfaceName) {
+  if(interfaceName && interfaceName.length > 0) {
+    const content = await fs.readFileSync('/etc/network/interfaces', {encoding: 'UTF-8'});    
+    const re = new RegExp(`iface ${interfaceName}[a-zA-Z0-9 ]* dhcp`,"i")
+    return re.test(content);
+  }
+  return false;
 }
 
 function getInterfaceName(firstLine) {

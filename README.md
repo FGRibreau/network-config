@@ -27,7 +27,8 @@ network.interfaces(function(err, interfaces){
     ip: '1.1.1.77',
     netmask: '1.1.1.0',
     mac: 'aa:aa:aa:aa:aa:aa',
-    gateway: '10.10.10.1'
+    gateway: '10.10.10.1',
+    dhcp: false
    },
    { ... }, { ... }]
   */
