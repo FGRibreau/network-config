@@ -6,7 +6,7 @@ var INET = 'inet';
 var BCAST = 'Bcast';
 
 module.exports = function (cp) {
-  function interfaces (f) {
+  function interfaces (f, options = {interfaces: {file: '/etc/network/interfaces', parse: false}}) {
     
     // @todo add command timeout
     cp.exec('ifconfig', function (err, ifConfigOut, stderr) {
@@ -27,17 +27,21 @@ module.exports = function (cp) {
           return f(stderr);
         }
         
-        fs.readFile(interfaces.FILE, {encoding: 'utf-8'}, (error, content) => {
+        if (options.interfaces.parse) {
+          fs.readFile(options.interfaces.file, {encoding: 'utf-8'}, (error, content) => {
             if(error) {
-              console.warn(error);
-            } 
-            f(null, parse(ifConfigOut, routeOut, content || ''));
+              f(error);
+            } else {
+              f(null, parse(ifConfigOut, routeOut, content));
+            }
         });                
+        } else {
+          f(null, parse(ifConfigOut, routeOut));
+        }
       });
     });
   };
   
-  interfaces.FILE = '/etc/network/interfaces';
   return interfaces;
 };
 
@@ -54,15 +58,20 @@ function parse(ifConfigOut, routeOut, interfacesContent) {
      * inet xx:xxx.xxx.xxx.xxx mask|masque|...:xxx.xxx.xxx.xxx
      */
 
-    return {
+    var result = {
       name: getInterfaceName(_.first(lines)),
       ip: getInterfaceIpAddr(lines[1]),
       netmask: getInterfaceNetmaskAddr(lines[1]),
       broadcast: getBroadcastAddr(lines[1]),
       mac: getInterfaceMacAddr(inface),
       gateway: getGateway(routeOut),
-      dhcp: isDhcp(getInterfaceName(_.first(lines)), interfacesContent)
     };
+
+    if(interfacesContent) {
+      result.dhcp = isDhcp(getInterfaceName(_.first(lines)), interfacesContent)
+    }
+
+    return result;
   });
 }
 
