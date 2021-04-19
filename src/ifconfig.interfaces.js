@@ -26,14 +26,13 @@ module.exports = function (cp) {
         if (stderr) {
           return f(stderr);
         }
-
-        var ifConfigFileContent = '';
-        try {
-          ifConfigFileContent = fs.readFileSync(interfaces.FILE, {encoding: 'UTF-8'});
-        } catch(error) {
-          console.warn(error);
-        }
-        f(null, parse(ifConfigOut, routeOut, ifConfigFileContent));
+        
+        fs.readFile(interfaces.FILE, {encoding: 'utf-8'}, (error, content) => {
+            if(error) {
+              console.warn(error);
+            } 
+            f(null, parse(ifConfigOut, routeOut, content || ''));
+        });                
       });
     });
   };
