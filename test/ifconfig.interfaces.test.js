@@ -161,6 +161,7 @@ describe('ifconfig', function () {
       execMock.stdout.push(fixtures.ifconfig_get_4);
       execMock.stdout.push(fixtures.route_get_4);
 
+
       ifconfig.interfaces(function (err, interfaces) {
         t.strictEqual(err, null);
         t.strictEqual(interfaces.length, 3);
@@ -187,6 +188,35 @@ describe('ifconfig', function () {
           broadcast: null,
           mac: "b8:27:eb:f6:e3:b1",
           gateway: '192.168.10.1',
+          dhcp: false
+        }]);
+        done();
+      });
+    });
+
+    it('should parse the dhcp state correctly from the interfaces file', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_1);
+      execMock.stdout.push(fixtures.route_get_3);
+      ifconfig.interfaces.FILE = fixtures.interfaces_file_dhcp;
+
+      ifconfig.interfaces(function (err, interfaces) {
+        t.strictEqual(err, null);
+        t.strictEqual(interfaces.length, 2);
+        t.deepEqual(interfaces, [{
+          name: 'eth0',
+          ip: '1.1.1.77',
+          netmask: '1.1.1.0',
+          broadcast: '1.1.1.255',
+          mac: 'aa:aa:aa:aa:aa:aa',
+          gateway: '*',
+          dhcp: true
+        }, {
+          name: 'lo',
+          ip: '127.0.0.1',
+          netmask: '255.0.0.0',
+          broadcast: null,
+          mac: null,
+          gateway: '*',
           dhcp: false
         }]);
         done();
