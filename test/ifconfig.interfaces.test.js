@@ -1,6 +1,8 @@
 'use strict';
 var fixtures = require('./fixtures');
 var t = require('chai').assert;
+var expect = require('chai').expect;
+var path = require('path');
 
 describe('ifconfig', function () {
   var ifconfigFactory;
@@ -148,6 +150,7 @@ describe('ifconfig', function () {
       execMock.stdout.push(fixtures.ifconfig_get_4);
       execMock.stdout.push(fixtures.route_get_4);
 
+
       ifconfig.interfaces(function (err, interfaces) {
         t.strictEqual(err, null);
         t.strictEqual(interfaces.length, 3);
@@ -175,6 +178,45 @@ describe('ifconfig', function () {
         }]);
         done();
       });
+    });
+
+    it('should parse the dhcp state correctly from the interfaces file', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_1);
+      execMock.stdout.push(fixtures.route_get_3);      
+
+      ifconfig.interfaces(function (err, interfaces) {
+        t.strictEqual(err, null);
+        t.strictEqual(interfaces.length, 2);
+        t.deepEqual(interfaces, [{
+          name: 'eth0',
+          dhcp: true,
+          ip: '1.1.1.77',
+          netmask: '1.1.1.0',
+          broadcast: '1.1.1.255',
+          mac: 'aa:aa:aa:aa:aa:aa',
+          gateway: '*'          
+        }, {
+          name: 'lo',
+          dhcp: false,
+          ip: '127.0.0.1',
+          netmask: '255.0.0.0',
+          broadcast: null,
+          mac: null,
+          gateway: '*'
+        }]);
+        done();
+      }, {interfaces: {file: fixtures.interfaces_dhcp_file, parse: true}});
+    });
+
+    it('should fail when the interfaces file does not exist, but the parse flag is set', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_1);
+      execMock.stdout.push(fixtures.route_get_3);
+
+       ifconfig.interfaces(function (err, interfaces) {              
+        expect(function(){throw err}).to.throw(err).with.property('code', 'ENOENT');
+        t.equal(interfaces, null);        
+        done();
+       }, {interfaces: {file: 'path/to/file/that/does/not/exist', parse: true}});      
     });
   });
 });

@@ -1,11 +1,13 @@
 'use strict';
 var _ = require('lodash');
+var fs = require('fs');
 
 var INET = 'inet';
 var BCAST = 'Bcast';
 
 module.exports = function (cp) {
-  return function (f) {
+  function interfaces (f, options = {interfaces: {file: '/etc/network/interfaces', parse: false}}) {
+    
     // @todo add command timeout
     cp.exec('ifconfig', function (err, ifConfigOut, stderr) {
       if (err) {
@@ -24,14 +26,27 @@ module.exports = function (cp) {
         if (stderr) {
           return f(stderr);
         }
-
+        
+        if (options.interfaces.parse) {
+          fs.readFile(options.interfaces.file, {encoding: 'utf-8'}, (err, content) => {
+            if(err) {
+              return f(err);
+            }
+            
+            f(null, parse(ifConfigOut, routeOut, content));
+          });    
+          return;
+        }
+        
         f(null, parse(ifConfigOut, routeOut));
       });
     });
   };
+  
+  return interfaces;
 };
 
-function parse(ifConfigOut, routeOut) {
+function parse(ifConfigOut, routeOut, interfacesContent) {
   return ifConfigOut.split('\n\n').map(function (inface) {
     var lines = inface.split('\n');
 
@@ -44,15 +59,29 @@ function parse(ifConfigOut, routeOut) {
      * inet xx:xxx.xxx.xxx.xxx mask|masque|...:xxx.xxx.xxx.xxx
      */
 
-    return {
+    var result = {
       name: getInterfaceName(_.first(lines)),
       ip: getInterfaceIpAddr(lines[1]),
       netmask: getInterfaceNetmaskAddr(lines[1]),
       broadcast: getBroadcastAddr(lines[1]),
       mac: getInterfaceMacAddr(inface),
-      gateway: getGateway(routeOut)
+      gateway: getGateway(routeOut),
     };
+
+    if(interfacesContent) {
+      result.dhcp = isDhcp(getInterfaceName(_.first(lines)), interfacesContent)
+    }
+
+    return result;
   });
+}
+
+function isDhcp(interfaceName, content) {
+  if(interfaceName && interfaceName.length > 0) {        
+    const re = new RegExp(`iface ${interfaceName}[a-zA-Z0-9 ]* dhcp`,"i")
+    return re.test(content);
+  }
+  return false;
 }
 
 function getInterfaceName(firstLine) {
