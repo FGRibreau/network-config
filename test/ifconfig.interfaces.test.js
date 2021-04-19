@@ -197,7 +197,7 @@ describe('ifconfig', function () {
     it('should parse the dhcp state correctly from the interfaces file', function (done) {
       execMock.stdout.push(fixtures.ifconfig_get_1);
       execMock.stdout.push(fixtures.route_get_3);
-      ifconfig.interfaces.FILE = fixtures.interfaces_file_dhcp;
+      ifconfig.interfaces.FILE = fixtures.interfaces_dhcp_file;
 
       ifconfig.interfaces(function (err, interfaces) {
         t.strictEqual(err, null);

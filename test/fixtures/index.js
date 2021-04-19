@@ -16,7 +16,7 @@ module.exports = {
   interfaces_3_out: fs.readFileSync(path.resolve(__dirname, './interfaces_3_out.txt'), 'utf8'),
   interfaces_dhcp: fs.readFileSync(path.resolve(__dirname, './interfaces_dhcp.txt'), 'utf8'),
   interfaces_dhcp_out: fs.readFileSync(path.resolve(__dirname, './interfaces_dhcp_out.txt'), 'utf8'),
-  interfaces_file_dhcp: path.resolve(__dirname, './interfaces_file_dhcp.txt'),
+  interfaces_dhcp_file: path.resolve(__dirname, './interfaces_dhcp_file.txt'),
 
   route_get_1: fs.readFileSync(path.resolve(__dirname, './route_get_1.txt'), 'utf8'),
   route_get_2: fs.readFileSync(path.resolve(__dirname, './route_get_2.txt'), 'utf8'),
