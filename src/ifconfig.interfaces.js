@@ -28,16 +28,17 @@ module.exports = function (cp) {
         }
         
         if (options.interfaces.parse) {
-          fs.readFile(options.interfaces.file, {encoding: 'utf-8'}, (error, content) => {
-            if(error) {
-              f(error);
-            } else {
-              f(null, parse(ifConfigOut, routeOut, content));
+          fs.readFile(options.interfaces.file, {encoding: 'utf-8'}, (err, content) => {
+            if(err) {
+              return f(err);
             }
-        });                
-        } else {
-          f(null, parse(ifConfigOut, routeOut));
+            
+            f(null, parse(ifConfigOut, routeOut, content));
+          });    
+          return;
         }
+        
+        f(null, parse(ifConfigOut, routeOut));
       });
     });
   };
