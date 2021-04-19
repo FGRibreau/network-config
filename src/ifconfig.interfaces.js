@@ -27,7 +27,13 @@ module.exports = function (cp) {
           return f(stderr);
         }
 
-        f(null, parse(ifConfigOut, routeOut, fs.readFileSync(interfaces.FILE, {encoding: 'UTF-8'})));
+        var ifConfigFileContent = '';
+        try {
+          ifConfigFileContent = fs.readFileSync(interfaces.FILE, {encoding: 'UTF-8'});
+        } catch(error) {
+          f(error);
+        }
+        f(null, parse(ifConfigOut, routeOut, ifConfigFileContent));
       });
     });
   };
