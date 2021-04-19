@@ -31,7 +31,7 @@ module.exports = function (cp) {
         try {
           ifConfigFileContent = fs.readFileSync(interfaces.FILE, {encoding: 'UTF-8'});
         } catch(error) {
-          f(error);
+          console.warn(error);
         }
         f(null, parse(ifConfigOut, routeOut, ifConfigFileContent));
       });
