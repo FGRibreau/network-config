@@ -47,7 +47,7 @@ module.exports = function (cp) {
 };
 
 function parse(ifConfigOut, routeOut, interfacesContent) {
-  return ifConfigOut.split('\n\n').map(function (inface) {
+  return ifConfigOut.trim().split('\n\n').map(function (inface) {
     var lines = inface.split('\n');
 
     /**

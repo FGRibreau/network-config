@@ -218,5 +218,31 @@ describe('ifconfig', function () {
         done();
        }, {interfaces: {file: 'path/to/file/that/does/not/exist', parse: true}});      
     });
+
+    it('should list interfaces even when there is an extra new line at the end of the output', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_5);
+      execMock.stdout.push(fixtures.route_get_1);
+
+      ifconfig.interfaces(function (err, interfaces) {
+        t.strictEqual(err, null);
+        t.strictEqual(interfaces.length, 2);
+        t.deepEqual(interfaces, [{
+          name: 'eth0',
+          ip: '1.1.1.77',
+          netmask: '1.1.1.0',
+          broadcast: '1.1.1.255',
+          mac: 'aa:aa:aa:aa:aa:aa',
+          gateway: '10.10.10.1'
+        }, {
+          name: 'lo',
+          ip: '127.0.0.1',
+          netmask: '255.0.0.0',
+          broadcast: null,
+          mac: null,
+          gateway: '10.10.10.1'
+        }]);
+        done();
+      });
+    });
   });
 });
