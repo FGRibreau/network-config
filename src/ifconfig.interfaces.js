@@ -6,7 +6,7 @@ var INET = 'inet';
 var BCAST = 'Bcast';
 
 module.exports = function (cp) {
-  function interfaces (f, options = {interfaces: {file: '/etc/network/interfaces', parse: false}}) {
+  function interfaces (f, options = {interfaces: {file: '/etc/network/interfaces', parse: false}, gateway: {resolveHostNames: false}}) {
     
     // @todo add command timeout
     cp.exec('ifconfig', function (err, ifConfigOut, stderr) {
@@ -18,7 +18,8 @@ module.exports = function (cp) {
         return f(stderr);
       }
 
-      cp.exec('route', function (err, routeOut, stderr) {
+      const routeCommand = options.gateway !== undefined && options.gateway.resolveHostNames ? 'route' : 'route -n';
+      cp.exec(routeCommand, function (err, routeOut, stderr) {
         if (err) {
           return f(err);
         }
