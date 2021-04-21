@@ -7,6 +7,7 @@ module.exports = {
   ifconfig_get_2: fs.readFileSync(path.resolve(__dirname, './ifconfig_get_2.txt'), 'utf8'),
   ifconfig_get_3: fs.readFileSync(path.resolve(__dirname, './ifconfig_get_3.txt'), 'utf8'),
   ifconfig_get_4: fs.readFileSync(path.resolve(__dirname, './ifconfig_get_4.txt'), 'utf8'),
+  ifconfig_get_5: fs.readFileSync(path.resolve(__dirname, './ifconfig_get_5.txt'), 'utf8'),
 
   interfaces_1: fs.readFileSync(path.resolve(__dirname, './interfaces_1.txt'), 'utf8'),
   interfaces_1_out: fs.readFileSync(path.resolve(__dirname, './interfaces_1_out.txt'), 'utf8'),
