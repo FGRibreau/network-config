@@ -1,6 +1,6 @@
 {
   "name": "network-config",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "debian ip network configuration for NodeJS",
   "main": "index.js",
   "keywords": [
