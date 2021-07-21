@@ -177,7 +177,7 @@ function getBroadcastAddr(line) {
  * @return {string,null} default gateway ip or null
  */
 function getGateway(stdout) {
-  const re = new RegExp(`(?:(?:default)|(?:link-local)) +([^ ]+)`)
+  const re = new RegExp(`(?:(?:default)|(?:link-local)|(?:0.0.0.0)) +([^ ]+)`)
   const match = stdout.match(re)
   if (match === null) return null
 

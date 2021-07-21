@@ -244,5 +244,30 @@ describe('ifconfig', function () {
         done();
       });
     });
+
+    it('should list interfaces with correct gateway when not resolving hostname', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_5);
+      execMock.stdout.push(fixtures.route_get_5);
+      ifconfig.interfaces(function (err, interfaces) {
+        t.strictEqual(err, null);
+        t.strictEqual(interfaces.length, 2);
+        t.deepEqual(interfaces, [{
+          name: 'eth0',
+          ip: '1.1.1.77',
+          netmask: '1.1.1.0',
+          broadcast: '1.1.1.255',
+          mac: 'aa:aa:aa:aa:aa:aa',
+          gateway: '192.168.10.1'
+        }, {
+          name: 'lo',
+          ip: '127.0.0.1',
+          netmask: '255.0.0.0',
+          broadcast: null,
+          mac: null,
+          gateway: '192.168.10.1'
+        }]);
+        done();
+      });
+    });
   });
 });

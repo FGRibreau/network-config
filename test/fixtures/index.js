@@ -22,5 +22,6 @@ module.exports = {
   route_get_1: fs.readFileSync(path.resolve(__dirname, './route_get_1.txt'), 'utf8'),
   route_get_2: fs.readFileSync(path.resolve(__dirname, './route_get_2.txt'), 'utf8'),
   route_get_3: fs.readFileSync(path.resolve(__dirname, './route_get_3.txt'), 'utf8'),
-  route_get_4: fs.readFileSync(path.resolve(__dirname, './route_get_4.txt'), 'utf8')
+  route_get_4: fs.readFileSync(path.resolve(__dirname, './route_get_4.txt'), 'utf8'),
+  route_get_5: fs.readFileSync(path.resolve(__dirname, './route_get_5.txt'), 'utf8')
 };
