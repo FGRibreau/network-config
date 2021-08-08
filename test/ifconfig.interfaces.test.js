@@ -157,6 +157,7 @@ describe('ifconfig', function () {
         t.deepEqual(interfaces, [{
           name: 'enxb827ebf6e3b1',
           ip: '192.168.10.10',
+          ip6: 'fe80::2866:af76:5fd6:11e2',
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
@@ -164,6 +165,43 @@ describe('ifconfig', function () {
         }, {
           name: 'lo',
           ip: '127.0.0.1',
+          ip6: '::1',
+          netmask: '255.0.0.0',
+          broadcast: null,
+          mac: null,
+          gateway: '192.168.10.1'
+        }, {
+          name: 'rename3',
+          ip: null,
+          netmask: null,
+          broadcast: null,
+          mac: "b8:27:eb:f6:e3:b1",
+          gateway: '192.168.10.1'
+        }]);
+        done();
+      });
+    });
+
+    it('should list interfaces with gateway - 0.0.0.0', function (done) {
+      execMock.stdout.push(fixtures.ifconfig_get_4);
+      execMock.stdout.push(fixtures.route_get_5);
+
+
+      ifconfig.interfaces(function (err, interfaces) {
+        t.strictEqual(err, null);
+        t.strictEqual(interfaces.length, 3);
+        t.deepEqual(interfaces, [{
+          name: 'enxb827ebf6e3b1',
+          ip: '192.168.10.10',
+          ip6: 'fe80::2866:af76:5fd6:11e2',
+          netmask: '255.255.255.0',
+          broadcast: '192.168.10.255',
+          mac: 'b8:27:eb:f6:e3:b1',
+          gateway: '192.168.10.1'
+        }, {
+          name: 'lo',
+          ip: '127.0.0.1',
+          ip6: '::1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,

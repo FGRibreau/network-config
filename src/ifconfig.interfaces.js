@@ -3,6 +3,7 @@ var _ = require('lodash');
 var fs = require('fs');
 
 var INET = 'inet';
+var INET6 = 'inet6';
 var BCAST = 'Bcast';
 
 module.exports = function (cp) {
@@ -59,10 +60,13 @@ function parse(ifConfigOut, routeOut, interfacesContent) {
      * Format 1
      * inet xx:xxx.xxx.xxx.xxx mask|masque|...:xxx.xxx.xxx.xxx
      */
+    const ipv4 = getInterfaceIpv4Addr(lines[1])
+    const ipv6 = getInterfaceIpv6Addr(lines[1]) || getInterfaceIpv6Addr(lines[2])
 
     var result = {
       name: getInterfaceName(_.first(lines)),
-      ip: getInterfaceIpAddr(lines[1]),
+      ip: getInterfaceIpv4Addr(lines[1]),
+      ...ipv6 && { ip6: ipv6 },
       netmask: getInterfaceNetmaskAddr(lines[1]),
       broadcast: getBroadcastAddr(lines[1]),
       mac: getInterfaceMacAddr(inface),
@@ -114,7 +118,7 @@ function getInterfaceMacAddr(str) {
 }
 
 /**
- * extract ip addr
+ * extract ip4 addr
  *
  * ifconfig output:
  *   - inet xx:xxx.xxx.xxx.xxx mask|masque|...:xxx.xxx.xxx.xxx
@@ -122,14 +126,35 @@ function getInterfaceMacAddr(str) {
  * @param  {string} line
  * @return {string,null} xxx.xxx.xxx.xxx
  */
-function getInterfaceIpAddr(line) {
+function getInterfaceIpv4Addr(line) {
   if (!_.includes(line, INET)) {
     return null;
   }
-  const re = new RegExp(`(?:(?:inet adr\:)|(?:inet addr\:)|(?:inet ))((?:[0-9]{1,3}\.?){4})`)
-  const match = line.match(re)
+  const ip4re = new RegExp(`(?:(?:inet adr\:)|(?:inet addr\:)|(?:inet ))((?:[0-9]{1,3}\.?){4})`)
+  const ip4match = line.match(ip4re)
 
-  return match[1].trim()
+  return (ip4match) ? ip4match[1].trim() : null;
+
+}
+
+/**
+ * extract ip6 addr
+ *
+ * ifconfig output:
+ *   - inet6 xxxx::xxxx:xxxx:xxxx:xxxx  prefixlen xx  scopeid xxxx<link>
+ *
+ * @param  {string} line
+ * @return {string,null} xxxx::xxxx:xxxx:xxxx:xxxx
+ */
+function getInterfaceIpv6Addr(line) {
+  if (!_.includes(line, INET6)) {
+    return null;
+  }
+  const ip6re = new RegExp(`(?:(?:inet6 adr\:)|(?:inet6 addr\:)|(?:inet6 ))((?:[a-f0-9:]+([\:]{1,2})?){2,16})`)
+  const ip6match = line.match(ip6re);
+
+  return (ip6match) ? ip6match[1].trim() : null;
+
 }
 
 /**
@@ -177,7 +202,7 @@ function getBroadcastAddr(line) {
  * @return {string,null} default gateway ip or null
  */
 function getGateway(stdout) {
-  const re = new RegExp(`(?:(?:default)|(?:link-local)) +([^ ]+)`)
+  const re = new RegExp(`(?:(?:default)|(?:link-local)|(?:0\.0\.0\.0)) +([^ ]+)`)
   const match = stdout.match(re)
   if (match === null) return null
 
