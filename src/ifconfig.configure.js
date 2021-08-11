@@ -45,7 +45,12 @@ module.exports = function (cp) {
 
 
 function replaceInterface(name, content, interfaceDescription) {
-  var replaceFn = interfaceDescription.dhcp? formatDhcpConfig : formatConfig;
+  var replaceFn;
+  if (interfaceDescription.ipv6) {
+    replaceFn = interfaceDescription.dhcp? formatIp6DhcpConfig : formatIp6Config;
+  } else {
+    replaceFn = interfaceDescription.dhcp? formatDhcpConfig : formatConfig;
+  }
   return excludeInterface(name, content).trim() + '\n\n' + replaceFn(_.extend({
     name: name
   }, interfaceDescription)) + '\n';
@@ -78,4 +83,22 @@ iface <%= name %> inet static
     netmask <%= netmask %>
     gateway <%= gateway %>
     */
+}.toString().split('\n').slice(2, -2).join('\n'));
+
+var formatIp6DhcpConfig = _.template(function () {
+  /**
+auto <%= name %>
+iface <%= name %> inet manual
+iface <%= name %> inet6 auto
+*/
+}.toString().split('\n').slice(2, -2).join('\n'));
+
+var formatIp6Config = _.template(function () {
+  /**
+auto <%= name %>
+iface <%= name %> inet manual
+iface <%= name %> inet6 static
+    address <%= ip6 %>/<%= prefixlen %>
+    gateway <%= ip6Gateway %>
+   */
 }.toString().split('\n').slice(2, -2).join('\n'));

@@ -157,19 +157,21 @@ describe('ifconfig', function () {
         t.deepEqual(interfaces, [{
           name: 'enxb827ebf6e3b1',
           ip: '192.168.10.10',
-          ip6: 'fe80::2866:af76:5fd6:11e2',
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
-          gateway: '192.168.10.1'
+          gateway: '192.168.10.1',
+          ip6: 'fe80::2866:af76:5fd6:11e2',
+          prefixlen: '64'
         }, {
           name: 'lo',
           ip: '127.0.0.1',
-          ip6: '::1',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
-          gateway: '192.168.10.1'
+          gateway: '192.168.10.1',
+          ip6: '::1',
+          prefixlen: '128'
         }, {
           name: 'rename3',
           ip: null,
@@ -184,7 +186,7 @@ describe('ifconfig', function () {
 
     it('should list interfaces with gateway - 0.0.0.0', function (done) {
       execMock.stdout.push(fixtures.ifconfig_get_4);
-      execMock.stdout.push(fixtures.route_get_5);
+      execMock.stdout.push(fixtures.route_get_6);
 
 
       ifconfig.interfaces(function (err, interfaces) {
@@ -194,6 +196,8 @@ describe('ifconfig', function () {
           name: 'enxb827ebf6e3b1',
           ip: '192.168.10.10',
           ip6: 'fe80::2866:af76:5fd6:11e2',
+          ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
+          prefixlen: '64',
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
@@ -202,6 +206,8 @@ describe('ifconfig', function () {
           name: 'lo',
           ip: '127.0.0.1',
           ip6: '::1',
+          ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
+          prefixlen: '128',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
@@ -209,6 +215,7 @@ describe('ifconfig', function () {
         }, {
           name: 'rename3',
           ip: null,
+          ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
           netmask: null,
           broadcast: null,
           mac: "b8:27:eb:f6:e3:b1",

@@ -1,0 +1,9 @@
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.10.1    0.0.0.0         UG    202    0        0 enxb827ebf6e3b1
+192.168.10.0    0.0.0.0         255.255.255.0   U     202    0        0 enxb827ebf6e3b1
+Kernel IPv6 routing table
+Destination                    Next Hop                   Flag Met Ref Use If
+::/0                           fe80::dea6:32ff:fe63:b8f2  UG   1   2     0 eno1
+::1/128                        ::                         Un   0   10     0 lo
+fe80::/64                      ::                         U    100 1     0 eno1
