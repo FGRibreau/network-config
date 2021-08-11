@@ -108,7 +108,7 @@ var formatIp6Config = _.template(function () {
 auto <%= name %>
 iface <%= name %> inet manual
 iface <%= name %> inet6 static
-    address <%= ip6 %>/<%= prefixlen %><%=
+    address <%= ip6 %>/<%= ip6prefixlen %><%=
 (typeof(ip6Gateway) !== "undefined") ? "\n    gateway "+ ip6Gateway : ""%>
    */
 }.toString().split('\n').slice(2, -2).join('\n'));

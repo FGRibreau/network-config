@@ -162,7 +162,7 @@ describe('ifconfig', function () {
           mac: 'b8:27:eb:f6:e3:b1',
           gateway: '192.168.10.1',
           ip6: 'fe80::2866:af76:5fd6:11e2',
-          prefixlen: '64'
+          ip6prefixlen: '64'
         }, {
           name: 'lo',
           ip: '127.0.0.1',
@@ -171,7 +171,7 @@ describe('ifconfig', function () {
           mac: null,
           gateway: '192.168.10.1',
           ip6: '::1',
-          prefixlen: '128'
+          ip6prefixlen: '128'
         }, {
           name: 'rename3',
           ip: null,
@@ -197,7 +197,7 @@ describe('ifconfig', function () {
           ip: '192.168.10.10',
           ip6: 'fe80::2866:af76:5fd6:11e2',
           ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
-          prefixlen: '64',
+          ip6prefixlen: '64',
           netmask: '255.255.255.0',
           broadcast: '192.168.10.255',
           mac: 'b8:27:eb:f6:e3:b1',
@@ -207,7 +207,7 @@ describe('ifconfig', function () {
           ip: '127.0.0.1',
           ip6: '::1',
           ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
-          prefixlen: '128',
+          ip6prefixlen: '128',
           netmask: '255.0.0.0',
           broadcast: null,
           mac: null,
@@ -222,7 +222,7 @@ describe('ifconfig', function () {
           gateway: '192.168.10.1'
         }]);
         done();
-      });
+      }, {interfaces: {file: '/etc/network/interfaces', parse: false}, gateway: {resolveHostNames: false, route6: true}});
     });
 
     it('should parse the dhcp state correctly from the interfaces file', function (done) {

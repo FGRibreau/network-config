@@ -85,7 +85,7 @@ describe('ifconfig', function () {
       ifconfig.configure('eth1', {
         ipv6: true,
         ip6: 'fe80::4639:c4ff:fe54:dbd3',
-        prefixlen: 64,
+        ip6prefixlen: 64,
         ip6Gateway: 'fe80::42:c3ff:fe44:4a66'
       }, function (err) {
         t.strictEqual(err, null);
@@ -104,7 +104,7 @@ describe('ifconfig', function () {
       ifconfig.configure('eth1', {
         ipv6: true,
         ip6: 'fe80::4639:c4ff:fe54:dbd3',
-        prefixlen: 64
+        ip6prefixlen: 64
       }, function (err) {
         t.strictEqual(err, null);
         t.strictEqual(

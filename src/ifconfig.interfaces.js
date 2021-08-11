@@ -19,7 +19,10 @@ module.exports = function (cp) {
         return f(stderr);
       }
 
-      const routeCommand = options.gateway !== undefined && options.gateway.resolveHostNames ? 'route' : 'route -n && route -6n';
+      var routeCommand = options.gateway !== undefined && options.gateway.resolveHostNames ? 'route' : 'route -n';
+      if (options.gateway && options.gateway.route6) {
+        routeCommand = `${routeCommand} && route -6n`;
+      }
       cp.exec(routeCommand, function (err, routeOut, stderr) {
         if (err) {
           return f(err);
@@ -73,7 +76,7 @@ function parse(ifConfigOut, routeOut, interfacesContent) {
       mac: getInterfaceMacAddr(inface),
       gateway: getGateway(routeOut),
       ...ipv6 && { ip6: ipv6 },
-      ...ip6prefixlen && {prefixlen: ip6prefixlen},
+      ...ip6prefixlen && {ip6prefixlen},
       ...ip6Gateway && {ip6Gateway}
     };
 
