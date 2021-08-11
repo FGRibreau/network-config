@@ -63,7 +63,7 @@ describe('ifconfig', function () {
     });
 
     it('should set interface configuration to ip6 dhcp', function (done) {
-      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp, 'utf8');
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp_ip6, 'utf8');
 
       ifconfig.configure('eth1', {
         dhcp: true,
@@ -80,7 +80,7 @@ describe('ifconfig', function () {
     });
 
     it('should set interface configuration to ip6 static', function (done) {
-      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_dhcp, 'utf8');
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_ip6, 'utf8');
 
       ifconfig.configure('eth1', {
         ipv6: true,
@@ -92,6 +92,40 @@ describe('ifconfig', function () {
         t.strictEqual(
             fs.readFileSync(INTERFACE_FILE, 'utf8'),
             fixtures.interfaces_ip6_out
+        );
+        t.deepEqual(os.cmd.shift(), 'service networking reload');
+        done();
+      });
+    });
+
+    it('should set interface configuration to ip6 static with no gateway', function (done) {
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_ip6_nogateway, 'utf8');
+
+      ifconfig.configure('eth1', {
+        ipv6: true,
+        ip6: 'fe80::4639:c4ff:fe54:dbd3',
+        prefixlen: 64
+      }, function (err) {
+        t.strictEqual(err, null);
+        t.strictEqual(
+            fs.readFileSync(INTERFACE_FILE, 'utf8'),
+            fixtures.interfaces_ip6_nogateway_out
+        );
+        t.deepEqual(os.cmd.shift(), 'service networking reload');
+        done();
+      });
+    });
+
+    it('should set interface configuration manual', function (done) {
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_manual, 'utf8');
+
+      ifconfig.configure('eth1', {
+        manual: true
+      }, function (err) {
+        t.strictEqual(err, null);
+        t.strictEqual(
+            fs.readFileSync(INTERFACE_FILE, 'utf8'),
+            fixtures.interfaces_manual_out
         );
         t.deepEqual(os.cmd.shift(), 'service networking reload');
         done();
@@ -111,6 +145,25 @@ describe('ifconfig', function () {
         t.strictEqual(
           fs.readFileSync(INTERFACE_FILE, 'utf8'),
           fixtures.interfaces_1_out
+        );
+        t.deepEqual(os.cmd.shift(), 'service networking reload');
+        done();
+      });
+    });
+
+    it('should include network and not gateway', function (done) {
+      fs.writeFileSync(INTERFACE_FILE, fixtures.interfaces_4, 'utf8');
+
+      ifconfig.configure('eth0', {
+        ip: '192.168.1.1',
+        netmask: '255.255.255.0',
+        network: '192.168.1.0',
+        broadcast: '192.168.1.255'
+      }, function (err) {
+        t.strictEqual(err, null);
+        t.strictEqual(
+            fs.readFileSync(INTERFACE_FILE, 'utf8'),
+            fixtures.interfaces_4_out
         );
         t.deepEqual(os.cmd.shift(), 'service networking reload');
         done();
