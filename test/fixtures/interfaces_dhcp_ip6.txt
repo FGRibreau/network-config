@@ -1,0 +1,3 @@
+auto eth1
+iface eth1 inet6 static
+    address fe80::bcbb:6bff:fed7:b3b8/64

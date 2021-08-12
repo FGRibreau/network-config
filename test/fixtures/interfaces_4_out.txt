@@ -1,0 +1,15 @@
+auto lo
+iface lo inet loopback
+
+iface eth1 inet manual
+
+auto vmbr2:0
+iface vmbr2:0 inet static
+  address 1.1.1.218
+  netmask 255.255.255.255
+
+auto eth0
+iface eth0 inet static
+    address 192.168.1.1
+    netmask 255.255.255.0
+    network 192.168.1.0
