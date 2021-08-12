@@ -52,6 +52,44 @@ network.interfaces(function(err, interfaces){
   */
  
 }, {interfaces: {parse: true, file: '/etc/network/interfaces'}}); //default: parse: false, file: '/etc/network/interfaces'
+
+// ipv6 support
+
+network.interfaces(function(err, interfaces){
+  /* interfaces should be something like:
+
+  [{
+      name: 'enxb827ebf6e3b1',
+      ip: '192.168.10.10',
+      ip6: 'fe80::2866:af76:5fd6:11e2',
+      ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
+      ip6prefixlen: '64',
+      netmask: '255.255.255.0',
+      broadcast: '192.168.10.255',
+      mac: 'b8:27:eb:f6:e3:b1',
+      gateway: '192.168.10.1'
+    }, {
+      name: 'lo',
+      ip: '127.0.0.1',
+      ip6: '::1',
+      ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
+      ip6prefixlen: '128',
+      netmask: '255.0.0.0',
+      broadcast: null,
+      mac: null,
+      gateway: '192.168.10.1'
+    }, {
+      name: 'rename3',
+      ip: null,
+      ip6Gateway: 'fe80::dea6:32ff:fe63:b8f2',
+      netmask: null,
+      broadcast: null,
+      mac: "b8:27:eb:f6:e3:b1",
+      gateway: '192.168.10.1'
+    }]
+  */
+ 
+}, {gateway: {resolveHostNames: false, route6: true}});
 ```
 
 ### Update interface (static)
