@@ -12,6 +12,12 @@ npm install network-config
 <a target="_blank" href="https://play.spotify.com/track/4fZJG8y70r2hyw3Kb4sU4N"><img style="width:100%" src="https://cloud.githubusercontent.com/assets/138050/6771675/9996f128-d0e5-11e4-93b1-6fef5c2c499a.gif"></a>
 </p>
 
+## ❤️ Shameless plug
+
+- [Open-Source self-hostable or fully-managed **webhook as a service**](https://www.hook0.com/)
+- [**Charts, simple as a URL**. No more server-side rendering pain, 1 url = 1 chart](https://image-charts.com)
+- [Looking for a managed Keycloak IAM ?](https://www.cloud-iam.com/)
+
 # Usage
 
 ### List active interfaces
